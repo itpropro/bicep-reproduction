@@ -19,9 +19,9 @@ module resourceGroups 'modules/carml/0.6.0/Microsoft.Resources/resourceGroups/de
 
 module functionStorage 'modules/carml/0.6.0/Microsoft.Storage/storageAccounts/deploy.bicep' = [for environment in environments: {
   scope: resourceGroup(format('{0}-{1}', prefix, environment))
-  name: '${substring(format('{0}function{1}{2}', prefix, 'storage', environment), 0, length(format('{0}function{1}{2}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}function{1}{2}', prefix, 'storage', environment)))}-${uniqueString(dateTime)}'
+  name: '${substring(format('{0}func{2}{1}', prefix, 'storage', environment), 0, length(format('{0}func{2}{1}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}func{2}{1}', prefix, 'storage', environment)))}-${uniqueString(dateTime)}'
   params: {
-    name: substring(format('{0}function{1}{2}', prefix, 'storage', environment), 0, length(format('{0}function{1}{2}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}function{1}{2}', prefix, 'storage', environment)))
+    name: substring(format('{0}func{2}{1}', prefix, 'storage', environment), 0, length(format('{0}func{2}{1}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}func{2}{1}', prefix, 'storage', environment)))
     location: location
     storageAccountKind: 'StorageV2'
     storageAccountSku: 'Standard_LRS'
@@ -60,11 +60,11 @@ module function 'modules/carml/0.6.0/Microsoft.Web/sites/deploy.bicep' = [for (e
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${functionStorage[index].outputs.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(resourceId(subscription().subscriptionId, format('{0}-{1}', prefix, environment), 'Microsoft.Storage/storageAccounts', substring(format('{0}function{1}{2}', prefix, 'storage', environment), 0, length(format('{0}function{1}{2}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}function{1}{2}', prefix, 'storage', environment)))), '2021-09-01').keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${functionStorage[index].outputs.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(resourceId(subscription().subscriptionId, format('{0}-{1}', prefix, environment), 'Microsoft.Storage/storageAccounts', substring(format('{0}func{2}{1}', prefix, 'storage', environment), 0, length(format('{0}func{2}{1}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}func{2}{1}', prefix, 'storage', environment)))), '2021-09-01').keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${functionStorage[index].outputs.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(resourceId(subscription().subscriptionId, format('{0}-{1}', prefix, environment), 'Microsoft.Storage/storageAccounts', substring(format('{0}function{1}{2}', prefix, 'storage', environment), 0, length(format('{0}function{1}{2}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}function{1}{2}', prefix, 'storage', environment)))), '2021-09-01').keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${functionStorage[index].outputs.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(resourceId(subscription().subscriptionId, format('{0}-{1}', prefix, environment), 'Microsoft.Storage/storageAccounts', substring(format('{0}func{2}{1}', prefix, 'storage', environment), 0, length(format('{0}func{2}{1}', prefix, 'storage', environment)) >= 24 ? 24 : length(format('{0}func{2}{1}', prefix, 'storage', environment)))), '2021-09-01').keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
